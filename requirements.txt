@@ -1,5 +1,3 @@
 Flask
 PyPDF2
-os
-ultralytics
 gunicorn
