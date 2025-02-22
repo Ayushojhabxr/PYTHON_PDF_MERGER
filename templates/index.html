@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Merger</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="shortcut icon" href="https://img.icons8.com/?size=100&id=67493&format=png&color=000000" type="image/x-icon">
+    
+    <style>
+        /* Default Light Mode */
+        body {
+            background-color: #f3f4f6;
+            color: #111827;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #111827;
+            color: #ffffff;
+        }
+
+        .dark-mode .container {
+            background-color: #1f2937;
+        }
+
+        .dark-mode .upload-box {
+            background-color: #374151;
+            border-color: #9ca3af;
+        }
+
+        .dark-mode .footer {
+            background-color: #1f2937;
+        }
+
+        .toggle-btn {
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 6px;
+            background-color: #e5e7eb;
+            color: #111827;
+            transition: background-color 0.3s, color 0.3s;
+            font-size: 18px;
+        }
+
+        .dark-mode .toggle-btn {
+            background-color: #374151;
+            color: #ffffff;
+        }
+
+        /* Fix Navbar Alignment */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 7vh;
+        }
+
+        /* Center Content */
+        .content-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: calc(95vh - 100px);
+            padding: 20px;
+        }
+
+        /* File List Styling */
+        #file-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 10px;
+        }
+
+        #file-list li {
+            background: rgba(0, 0, 0, 0.05);
+            padding: 6px 10px;
+            border-radius: 4px;
+            margin-top: 5px;
+        }
+
+        .dark-mode #file-list li {
+            background: rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar bg-blue-600 text-white p-4">
+        <h1 class="text-2xl font-semibold">PDF Merger</h1>
+        <button id="theme-toggle" class="toggle-btn">🌙</button>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="content-wrapper">
+        <div class="container bg-white p-8 rounded-lg shadow-lg w-full max-w-lg text-center">
+            <h2 class="text-2xl font-bold mb-4">Merge Your PDFs</h2>
+
+            <form action="/" method="POST" enctype="multipart/form-data" class="space-y-4">
+                <label for="file-upload" class="cursor-pointer flex flex-col items-center justify-center upload-box bg-gray-200 p-4 rounded-lg border-2 border-dashed border-gray-400 hover:bg-gray-300 transition">
+                    <span class="font-medium mt-2">Click to upload PDF files</span>
+                    <input id="file-upload" type="file" name="pdf_files" multiple required class="hidden" onchange="showFileNames(event)">
+                </label>
+
+                <ul id="file-list" class="text-left text-sm mt-2"></ul>
+
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 transition w-full">
+                    Merge PDFs
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer bg-blue-600 text-white text-center p-4">
+        <p>Developed with ❤️ by Ayush Ojha</p>
+        <div class="flex justify-center space-x-4 mt-2">
+            <a href="https://github.com/Ayushojhabxr" target="_blank" class="hover:opacity-80">
+                <img src="https://cdn-icons-png.flaticon.com/512/733/733609.png" class="w-6 h-6" alt="GitHub">
+            </a>
+            <a href="https://www.linkedin.com/in/ayush-ojha-977945253/" target="_blank" class="hover:opacity-80">
+                <img src="https://cdn-icons-png.flaticon.com/512/145/145807.png" class="w-6 h-6" alt="LinkedIn">
+            </a>
+        </div>
+    </footer>
+
+    <script>
+        // Show Uploaded File Names
+        function showFileNames(event) {
+            const fileList = document.getElementById("file-list");
+            fileList.innerHTML = ""; // Clear previous list
+
+            const files = event.target.files;
+            if (files.length > 0) {
+                for (let i = 0; i < files.length; i++) {
+                    const listItem = document.createElement("li");
+                    listItem.textContent = `📄 ${files[i].name}`;
+                    fileList.appendChild(listItem);
+                }
+            } else {
+                fileList.innerHTML = "<li>No files selected</li>";
+            }
+        }
+
+        // Dark Mode Toggle using Internal CSS
+        const themeToggle = document.getElementById("theme-toggle");
+        const body = document.body;
+
+        function updateTheme() {
+            if (localStorage.getItem("theme") === "dark") {
+                body.classList.add("dark-mode");
+                themeToggle.textContent = "☀️";
+            } else {
+                body.classList.remove("dark-mode");
+                themeToggle.textContent = "🌙";
+            }
+        }
+
+        // Set theme on page load
+        updateTheme();
+
+        // Toggle theme on button click
+        themeToggle.addEventListener("click", () => {
+            if (body.classList.contains("dark-mode")) {
+                localStorage.setItem("theme", "light");
+            } else {
+                localStorage.setItem("theme", "dark");
+            }
+            updateTheme();
+        });
+    </script>
+
+</body>
+</html>
